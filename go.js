@@ -5,7 +5,7 @@ const FileAsync = require('lowdb/adapters/FileAsync');
 (async () => {
     console.log('starting app...');
     db = await low(new FileAsync('db.json'));
-    await db.defaults({ accounts: [] }).write();
+    await db.defaults({ balances: [] }).write();
 
     db._.mixin({
         upsert: (collection, obj, matcher) => {

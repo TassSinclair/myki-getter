@@ -16,7 +16,7 @@ function startBrowser() {
 async function updateBalances(balances) {
     let table = await db.get('balances');
     for (const balance of balances) {
-        await table.upsert(balance, { card: balance.card, balance: balance.balance }).write();
+        await table.upsert(balance, { card: balance.card, money: balance.money }).write();
     }
 }
 
@@ -27,7 +27,7 @@ function toBalance(row) {
     return {
         card: values[1],
         owner: values[2],
-        balance: values[3].replace(/[^0-9.-]+/g, ''),
+        money: values[3].replace(/[^0-9.-]+/g, ''),
     };
 }
 
@@ -49,7 +49,6 @@ async function scrape(db, browser) {
     await page.click('#ctl00_uxContentPlaceHolder_uxLogin');
 
     await page.waitForSelector('#ctl00_uxContentPlaceHolder_uxMyCards');
-
 
     const listItems = await page.$$eval('#ctl00_uxContentPlaceHolder_uxMyCards tr',
         trs => trs.slice(1).map(tr => tr.innerText)

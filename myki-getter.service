@@ -1,0 +1,16 @@
+# /etc/systemd/system/myki-getter.service
+
+[Unit]
+Description=Myki getter service
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStart=/usr/bin/docker run --rm --cap-add=SYS_ADMIN --name %n --shm-size 2G -p 8764:8764 myki-getter
+ExecStop=/usr/bin/docker stop %n
+[Install]
+WantedBy=multi-user.target

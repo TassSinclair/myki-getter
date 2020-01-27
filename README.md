@@ -1,18 +1,16 @@
-# Statement Getter
+# Myki Getter
 
-Gets 'current balance' and 'balance available' from various netbanking sites.
-
-Currently works for St. George and ING.
+Gets Myki money from My Myki portal.
 
 ## Scraping
-Logs in to the netbanking accounts for the banks, and gets account information (name, BSB, account number, current balance and balance available) for each account. Saves it to a database.
+Logs in to the My Myki portal for a user and gets card information (card number, card holder, myki money) for each card in-use. Saves it to a database. Sleeps for 10 minutes, and then tries again.
 
 ## Serving
 
 Runs a webserver at port `8764` with the following endpoints:
 
-- `/accounts`: returns all accounts
-- `/accounts/bsb/000000/number/0000000000`: returns a specific account matching that BSB and number
+- `/balances`: returns all accounts
+- `/balances/card/000000000000000`: returns a specific card matching that card number
 
 # Configuration
 
@@ -20,17 +18,11 @@ Set up `data/config.js` to return an object that looks something like this:
 
 ```js
 const config = {
-  stGeorge: {
-    accessNumber: '...',
-    securityNumber: '...',
-    password: '...',
-  },
-  ing: {
-    clientNumber: '...',
-    pin: '...',
-  }
+  username: '...',
+  password: '...',
 };
 
 module.exports = config;
 ```
 
+It's up to you how to do that. It will work with plain-text credentials, but you should find a way to manage the secrets securely.
