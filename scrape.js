@@ -16,7 +16,7 @@ function startBrowser() {
 async function updateBalances(balances) {
     let table = await db.get('balances');
     for (const balance of balances) {
-        await table.upsert(balance, { card: balance.card, money: balance.money }).write();
+        await table.upsert(balance, { card: balance.card }).write();
     }
 }
 
